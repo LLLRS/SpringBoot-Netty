@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>七七聊天室</title>
+
+
+		<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" 
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/login.css">
+        <style>
+            /*web background*/
+            .container{
+                display:table;
+                height:100%;
+            }
+ 
+            .row{
+                display: table-cell;
+                vertical-align: middle;
+            }
+            /* centered columns styles */
+            .row-centered {
+                text-align:center;
+            }
+            .col-centered {
+                display:inline-block;
+                float:none;
+                text-align:left;
+                margin-right:-4px;
+            }
+        </style>
+	</head>
+	<body>
+    <!-- 注册页面 -->
+    <div class="fpage center hide" id="registerPage">
+        <h2>注册</h2>
+        <input type="text" id="reg_username" value placeholder="用户名"><br>
+        <input type="password" id="reg_password" value placeholder="密码"><br>
+        <input type="text" id="reg_nickname" value placeholder="昵称"><br>
+        <button id="register">注册</button>
+        <p>
+            <span>已有账号,</span>
+            <i id="registerPage-loginPage">登录</i>
+        </p>
+    </div>
+    
+    <!-- 登录页面 -->
+    <div class="fpage center " id="loginPage">
+        <h2>七七聊天室</h2>
+
+        <input type="text" id="log_username" value placeholder="用户名"><br>
+        <input type="password" id="log_password" value placeholder="密码"><br>
+        <button id="login" type="submit">登录</button>
+        <p>
+            <span>没有账号,</span>
+            <i id="loginPage-registerPage">现在注册</i>
+        </p>
+
+    </div>
+
+
+    <!-- jQuery -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" 
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="js/app.js" ></script>
+
+	<script>
+		var login = document.getElementById("login");
+		var register = document.getElementById("register");
+		
+		login.onclick = function() {
+
+			var username = document.getElementById("log_username");
+			var password = document.getElementById("log_password");
+	
+			// 判断用户名是否为空，如果为空则让其获得焦点
+			if (!app.isNotNull(username.value)) {
+				// 获取焦点
+				alert("用户名不能为空");
+//						return false;
+			} else if (!app.isNotNull(password.value)) {
+				// 获取焦点
+				alert("密码不能为空");
+				return false;
+			} else {
+				// 判断用户名和密码的长度，进行限制
+				if (username.value.length > 12) {
+					alert("用户名不能超过12");
+					return false;
+				} else if (password.value.length > 12) {
+					alert("密码不能超过12");
+					return false;
+				}
+				
+				
+				// 与后端联调
+				$.ajax({
+					url: app.serverUrl + "/u/login",
+					data:JSON.stringify({
+						username: username.value,
+						password: password.value,
+					}),
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+							
+						if (data.status == 200) {
+							// 登录成功之后，保存全局用户对象到本地缓存
+							var userInfoJson = data.data;
+							app.setUserGlobalInfo(userInfoJson);
+										
+							// 页面跳转
+							location.href = "main.html";
+						} else {
+							alert(data.msg);
+						}
+					}
+				});
+			}
+		}
+		
+		register.onclick = function() {
+
+			var nickname = document.getElementById("reg_nickname");
+			var username = document.getElementById("reg_username");
+			var password = document.getElementById("reg_password");
+			
+			
+			// 判断用户名是否为空，如果为空则让其获得焦点
+			if (!app.isNotNull(username.value)) {
+				
+				alert("用户名不能为空");
+//						return false;
+			} else if (!app.isNotNull(password.value)) {
+				
+				alert("密码不能为空");
+				return false;
+			} else if (!app.isNotNull(nickname.value)) {
+				
+				alert("昵称不能为空");
+				return false;
+			}else {
+				// 判断用户名和密码的长度，进行限制
+				if (username.value.length > 12) {
+					alert("用户名不能超过12");
+					return false;
+				} else if (password.value.length > 12) {
+					alert("密码不能超过12");
+					return false;
+				} else if (nickname.value.length > 6) {
+					alert("昵称不能超过6");
+					return false;
+				}
+				
+				$.ajax({
+					url: app.serverUrl + "/u/regist",
+					data:JSON.stringify({
+						username: username.value,
+						password: password.value,
+						nickname: nickname.value,
+					}),
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						//服务器返回响应，根据响应结果，分析是否登录成功；					
+						if (data.status == 200) {
+							// 注册成功之后，保存全局用户对象到本地缓存
+							var userInfoJson = data.data;
+							app.setUserGlobalInfo(userInfoJson);
+										
+							// 页面跳转
+							location.href = "main.html";
+						} else {
+							alert(data.msg);
+						}
+					}
+				});
+				
+			}
+		}
+		
+		$("#loginPage-registerPage").click(function(){
+			divHide(this);
+		});
+		
+		
+		$("#registerPage-loginPage").click(function(){
+			divHide(this);
+		});
+		
+		
+		var divHide = function(e) {
+			var name = $(e).attr('id');
+			var x = name.split("-");
+			var y = x[0].split("_");
+			var a = x[1];
+		
+			for(var i = 0; i < y.length; i++) {
+				$("#" + y[i]).addClass("hide");
+			}
+			// $("#"+x[0]).addClass("hide");
+			$("#" + a).removeClass("hide");
+		};
+	</script>
+	
+	</body>
+</html>
