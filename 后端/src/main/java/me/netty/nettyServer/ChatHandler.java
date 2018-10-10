@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 /**
  *
- * @Description: 处理消息的handler
+ * 处理消息的handler
  * TextWebSocketFrame： 在netty中，是用于为websocket专门处理文本的对象，frame是消息的载体
  */
 

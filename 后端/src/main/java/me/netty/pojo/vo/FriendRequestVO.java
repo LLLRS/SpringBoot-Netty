@@ -1,7 +1,7 @@
 package me.netty.pojo.vo;
 
 /**
- * @Description: 好友请求发送方的信息
+ * 好友请求发送方的信息
  */
 public class FriendRequestVO {
 	

@@ -2,7 +2,7 @@ package me.netty.enums;
 
 /**
  * 
- * @Description: 消息签收状态 枚举
+ * 消息签收状态 枚举
  */
 public enum MsgSignFlagEnum {
 	

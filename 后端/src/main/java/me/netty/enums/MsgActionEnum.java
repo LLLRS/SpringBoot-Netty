@@ -2,7 +2,7 @@ package me.netty.enums;
 
 /**
  * 
- * @Description: 发送消息的动作 枚举
+ * 发送消息的动作 枚举
  */
 public enum MsgActionEnum {
 	
