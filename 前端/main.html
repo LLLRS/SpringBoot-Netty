@@ -342,10 +342,13 @@ integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh
 <script type="text/javascript">
 	window.onload=function(){
 		function init(){
-			//js效果加载不出来 TODO
-			flashhead();
-
-
+			var me = app.getUserGlobalInfo();
+			console.log(me);
+			if(!app.isNotNull(me)){
+				alert("请先登录");
+				app.userLogout();
+				return;
+			}
 
 			contact.fetchContactList();
 			contact.fetchFriendRequests();

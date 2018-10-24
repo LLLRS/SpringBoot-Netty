@@ -274,7 +274,7 @@ public class UserController {
 
     /**
      *
-     *  用户手机端获取未签收的消息列表
+     *  用户端获取未签收的消息列表
      */
     @PostMapping("/getUnReadMsgList")
     public JSONResult getUnReadMsgList(String acceptUserId) {
