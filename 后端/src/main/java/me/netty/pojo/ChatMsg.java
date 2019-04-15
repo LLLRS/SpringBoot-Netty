@@ -1,10 +1,11 @@
 package me.netty.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "chat_msg")
-public class ChatMsg {
+public class ChatMsg implements Serializable {
     @Id
     private String id;
 

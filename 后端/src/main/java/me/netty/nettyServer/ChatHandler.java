@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 /**
  *
- * 处理消息的handler
+ * @Description: 处理消息的handler
  * TextWebSocketFrame： 在netty中，是用于为websocket专门处理文本的对象，frame是消息的载体
  */
 
@@ -150,7 +150,8 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         // 发生异常之后关闭连接（关闭channel），随后从ChannelGroup中移除
         ctx.channel().close();
         users.remove(ctx.channel());
-    }
 
+
+    }
 
 }

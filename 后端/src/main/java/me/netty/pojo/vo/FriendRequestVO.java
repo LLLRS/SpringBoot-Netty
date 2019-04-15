@@ -1,9 +1,11 @@
 package me.netty.pojo.vo;
 
+import java.io.Serializable;
+
 /**
- * 好友请求发送方的信息
+ * @Description: 好友请求发送方的信息
  */
-public class FriendRequestVO {
+public class FriendRequestVO implements Serializable {
 	
     private String sendUserId;
     private String sendUsername;

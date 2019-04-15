@@ -15,6 +15,12 @@ import me.netty.pojo.vo.UsersVO;
 import me.netty.service.UserService;
 import me.netty.utils.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,22 +55,27 @@ public class UserController {
             return JSONResult.errorMsg("用户名和密码不能为空...");
         }
 
-        //判断用户名是否存在，存在 登录
+        //判断用户名是否存在
         Users userResult = null;
-        boolean isExist = userService.queryUsernameIsExist(user.getUsername());
-        if(isExist){
+        Users isExist = userService.queryUsernameIsExist(user.getUsername());
+
+        System.err.println(isExist.toString());
+        System.out.println("----------------------------------");
+        if(isExist != null){
 
             userResult = userService.queryUserForLogin(user.getUsername(),
-                                MD5Utils.getMD5Str(user.getPassword()));
+                    MD5Utils.getMD5Str(user.getPassword()));
             if(userResult == null)
                 return JSONResult.errorMsg("用户名或者密码不正确...");
 
         }
 
+
+
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(userResult,usersVO);
 
-        log.info("用户"+ user.getUsername() +"登录");
+        log.info("用户 "+ user.getUsername() +" 成功登录");
         return JSONResult.ok(usersVO);
     }
 
@@ -80,14 +91,14 @@ public class UserController {
 
         //判断用户名是否存在
         Users userResult = null;
-        boolean isExist = userService.queryUsernameIsExist(user.getUsername());
-        if(isExist){
+        Users isExist = userService.queryUsernameIsExist(user.getUsername());
+        if(isExist != null){
 
             return JSONResult.errorMsg("用户名已存在...");
         }else{
 
             user.setNickname(user.getUsername());
-            user.setFaceImage("M00/00/00/Q82PbFu3WC-AVGdQAAAJ85I4a2E924_80x80.png"); //默认图像
+            user.setFaceImage("M00/00/00/neaVGVybkeiAWtRyAAC_7RvpaYI202_80x80.png"); //默认图像
             user.setFaceImageBig("M00/00/00/Q82PbFu3WC-AVGdQAAAJ85I4a2E924.png");
             user.setPassword(MD5Utils.getMD5Str(user.getPassword()));
             userResult = userService.saveUser(user);
@@ -223,7 +234,7 @@ public class UserController {
     }
 
     /**
-     *  发送添加好友的请求
+     *  添加好友的请求
      */
     @PostMapping("/queryFriendRequests")
     public JSONResult queryFriendRequests(String userId) {

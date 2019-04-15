@@ -1,6 +1,8 @@
 package me.netty.pojo.vo;
 
-public class UsersVO {
+import java.io.Serializable;
+
+public class UsersVO implements Serializable {
     private String id;
     private String username;
     private String faceImage;

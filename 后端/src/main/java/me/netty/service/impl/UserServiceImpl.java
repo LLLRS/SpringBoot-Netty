@@ -20,6 +20,8 @@ import me.netty.utils.FastDFSClient;
 import me.netty.utils.JsonUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,14 +56,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public boolean queryUsernameIsExist(String username) {
+    @Cacheable(value = "users",  unless = "#result eq null")
+    public Users queryUsernameIsExist(String username) {
 
+        System.err.println("开始缓存");
         Users user = new Users();
         user.setUsername(username);
 
         Users result = userMapper.selectOne(user);
 
-        return result != null ? true : false;
+        return result;
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -81,6 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
+    @CachePut(value = "user", unless = "#result eq null")
     public Users updateUserInfo(Users user) {
         userMapper.updateByPrimaryKeySelective(user);
         return queryUserById(user.getId());
@@ -117,6 +122,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
+    @Cacheable(value = "users", unless = "#result eq null")
     public Users queryUserInfoByUsername(String username) {
         Example ue = new Example(Users.class);
         Example.Criteria uc = ue.createCriteria();
@@ -126,6 +132,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Transactional(propagation = Propagation.SUPPORTS)
+    @Cacheable(value = "users", unless = "#result eq null")
     public Users queryUserById(String userId) {
 
         return userMapper.selectByPrimaryKey(userId);
@@ -149,6 +156,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
+    @Cacheable(value = "users", unless = "#result eq null")
     public List<MyFriendsVO> queryMyFriends(String userId) {
         List<MyFriendsVO> myFirends = usersMapperCustom.queryMyFriends(userId);
         return myFirends;
@@ -183,6 +191,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
+    @Cacheable(value = "users", unless = "#result eq null")
     public List<FriendRequestVO> queryFriendRequestList(String acceptUserId) {
         return usersMapperCustom.queryFriendRequestList(acceptUserId);
     }
@@ -255,6 +264,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
+    @Cacheable(value = "msgs", unless = "#result eq null")
     public List<me.netty.pojo.ChatMsg> getUnReadMsgList(String acceptUserId) {
 
         Example chatExample = new Example(me.netty.pojo.ChatMsg.class);

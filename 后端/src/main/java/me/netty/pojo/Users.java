@@ -1,8 +1,9 @@
 package me.netty.pojo;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-public class Users {
+public class Users implements Serializable {
     @Id
     private String id;
 
@@ -132,5 +133,10 @@ public class Users {
      */
     public void setCid(String cid) {
         this.cid = cid;
+    }
+
+    @Override
+    public String toString() {
+        return this.username + "  " + this.password + this.faceImage;
     }
 }

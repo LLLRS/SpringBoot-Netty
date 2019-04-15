@@ -2,7 +2,7 @@ package me.netty.enums;
 
 /**
  * 
- * 忽略或者通过 好友请求的枚举
+ * @Description: 忽略或者通过 好友请求的枚举
  */
 public enum OperatorFriendRequestTypeEnum {
 	

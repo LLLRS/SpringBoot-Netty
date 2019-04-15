@@ -1,6 +1,8 @@
 package me.netty.pojo.bo;
 
-public class UsersBO {
+import java.io.Serializable;
+
+public class UsersBO implements Serializable {
     private String userId;
     private String faceData;
     private String nickname;

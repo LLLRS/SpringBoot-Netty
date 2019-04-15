@@ -2,7 +2,7 @@ package me.netty.enums;
 
 /**
  * 
- * 添加好友前置状态 枚举
+ * @Description: 添加好友前置状态 枚举
  */
 public enum SearchFriendsStatusEnum {
 	

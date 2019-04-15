@@ -1,8 +1,7 @@
 package me.netty.utils;
 
 /**
- * 自定义响应数据结构
- *
+ *  自定义响应数据结构
  */
 public class JSONResult {
 
@@ -30,18 +29,22 @@ public class JSONResult {
     }
     
     public static JSONResult errorMsg(String msg) {
+
         return new JSONResult(500, msg, null);
     }
     
     public static JSONResult errorMap(Object data) {
+
         return new JSONResult(501, "error", data);
     }
     
     public static JSONResult errorTokenMsg(String msg) {
+
         return new JSONResult(502, msg, null);
     }
     
     public static JSONResult errorException(String msg) {
+
         return new JSONResult(555, msg, null);
     }
 
@@ -49,9 +52,6 @@ public class JSONResult {
 
     }
 
-//    public static LeeJSONResult build(Integer status, String msg) {
-//        return new LeeJSONResult(status, msg, null);
-//    }
 
     public JSONResult(Integer status, String msg, Object data) {
         this.status = status;

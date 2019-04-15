@@ -5,7 +5,7 @@ import io.netty.channel.Channel;
 import java.util.HashMap;
 
 /**
- * 用户id和channel的关联关系处理
+ * @Description: 用户id和channel的关联关系处理
  */
 public class UserChannelRel {
 
